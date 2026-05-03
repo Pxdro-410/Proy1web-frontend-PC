@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="F1 Pilot Tracker — Gestiona, califica y explora los pilotos de Fórmula 1 en tiempo real." />
+  <title>F1 Pilot Tracker</title>
+
+  <!-- Fuentes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,700&family=Barlow+Condensed:wght@600;700;800;900&display=swap"
+    rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="header-brand">
+        <div class="f1-logo">
+          <span class="f1-f">F</span><span class="f1-one">1</span>
+        </div>
+        <div class="brand-text">
+          <h1 class="brand-title">Pilot Tracker</h1>
+          <p class="brand-sub">Formula 1 Database</p>
+        </div>
+      </div>
+      <button class="btn-primary" id="btn-open-create">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+          <path
+            d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2z" />
+        </svg>
+        Nuevo Piloto
+      </button>
+    </div>
+    <div class="header-stripe"></div>
+  </header>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="main-content">
+
+    <!-- Controls Bar -->
+    <div class="controls-bar">
+      <div class="search-wrapper">
+        <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+          viewBox="0 0 16 16">
+          <path
+            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.099zm-5.242 1.656a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11z" />
+        </svg>
+        <input type="text" id="input-search" class="input-search" placeholder="Buscar piloto..." autocomplete="off" />
+        <button class="btn-clear-search" id="btn-clear-search" aria-label="Limpiar búsqueda">✕</button>
+      </div>
+
+      <div class="sort-controls">
+        <label class="sort-label" for="select-sort">Ordenar por</label>
+        <select id="select-sort" class="select-control">
+          <option value="id">Por defecto</option>
+          <option value="name">Nombre</option>
+          <option value="team">Equipo</option>
+          <option value="number">Número</option>
+          <option value="championships">Campeonatos</option>
+        </select>
+        <button class="btn-order" id="btn-order" data-order="ASC" title="Cambiar dirección">
+          <span class="order-icon">↑</span>
+          <span class="order-text">ASC</span>
+        </button>
+      </div>
+
+      <div class="limit-control">
+        <label class="sort-label" for="select-limit">Mostrar</label>
+        <select id="select-limit" class="select-control">
+          <option value="6">6</option>
+          <option value="12" selected>12</option>
+          <option value="24">24</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Resultados -->
+    <div class="results-info">
+      <span id="results-count" class="results-count"></span>
+    </div>
+
+    <!-- Cards -->
+    <div id="pilots-grid" class="pilots-grid">
+      <!-- Cards rendered by JS -->
+    </div>
+
+    <!-- Estado vacio -->
+    <div id="empty-state" class="empty-state hidden">
+      <div class="empty-icon">🏁</div>
+      <h2 class="empty-title">No se encontraron pilotos</h2>
+      <p class="empty-sub">Intenta con otra búsqueda o agrega un piloto nuevo.</p>
+    </div>
+
+    <!-- Estado de carga -->
+    <div id="loading-state" class="loading-state hidden">
+      <div class="spinner"></div>
+      <p>Cargando pilotos...</p>
+    </div>
+
+    <!-- Paginación -->
+    <nav class="pagination" id="pagination" aria-label="Paginación"></nav>
+
+  </main>
+
+  <!--  NUEVO / EDITAR PILOTO -->
+  <div class="modal-overlay hidden" id="modal-pilot" role="dialog" aria-modal="true"
+    aria-labelledby="modal-pilot-title">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modal-pilot-title">Nuevo Piloto</h2>
+        <button class="modal-close" id="modal-pilot-close" aria-label="Cerrar">✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="form-pilot" novalidate>
+          <input type="hidden" id="pilot-id" />
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="pilot-name">Nombre <span class="required">*</span></label>
+              <input type="text" id="pilot-name" placeholder="Max Verstappen" maxlength="150" />
+              <span class="field-error" id="err-name"></span>
+            </div>
+            <div class="form-group">
+              <label for="pilot-team">Equipo <span class="required">*</span></label>
+              <input type="text" id="pilot-team" placeholder="Red Bull Racing" maxlength="150" />
+              <span class="field-error" id="err-team"></span>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="pilot-nationality">Nacionalidad <span class="required">*</span></label>
+              <input type="text" id="pilot-nationality" placeholder="Holandés" maxlength="100" />
+              <span class="field-error" id="err-nationality"></span>
+            </div>
+            <div class="form-group">
+              <label for="pilot-number">Número <span class="required">*</span> <small>(1–99)</small></label>
+              <input type="number" id="pilot-number" placeholder="1" min="1" max="99" />
+              <span class="field-error" id="err-number"></span>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="pilot-championships">Campeonatos</label>
+              <input type="number" id="pilot-championships" placeholder="0" min="0" />
+              <span class="field-error" id="err-championships"></span>
+            </div>
+            <div class="form-group">
+              <label for="pilot-image">URL de imagen</label>
+              <input type="url" id="pilot-image" placeholder="https://ejemplo.com/foto.jpg" />
+            </div>
+          </div>
+
+          <div class="form-group full-width">
+            <label for="pilot-description">Descripción</label>
+            <textarea id="pilot-description" rows="3" placeholder="Breve descripción del piloto..."></textarea>
+          </div>
+
+          <span class="field-error form-error" id="form-error"></span>
+
+          <div class="modal-actions">
+            <button type="button" class="btn-secondary" id="btn-cancel-pilot">Cancelar</button>
+            <button type="submit" class="btn-primary" id="btn-submit-pilot">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: RATING -->
+  <div class="modal-overlay hidden" id="modal-rating" role="dialog" aria-modal="true"
+    aria-labelledby="modal-rating-title">
+    <div class="modal modal-rating">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modal-rating-title">Rating</h2>
+        <button class="modal-close" id="modal-rating-close" aria-label="Cerrar">✕</button>
+      </div>
+      <div class="modal-body">
+
+        <!-- banner de info del piloto -->
+        <div class="rating-pilot-banner" id="rating-pilot-banner">
+          <img class="rating-pilot-img" id="rating-pilot-img" src="" alt="" />
+          <div>
+            <p class="rating-pilot-name" id="rating-pilot-name"></p>
+            <p class="rating-pilot-team" id="rating-pilot-team"></p>
+          </div>
+        </div>
+
+        <!-- display del puntaje promedio -->
+        <div class="avg-score-block" id="avg-score-block">
+          <div class="avg-score-circle" id="avg-score-circle">–</div>
+          <div>
+            <p class="avg-score-label">Promedio</p>
+            <p class="avg-score-count" id="avg-score-count">Sin ratings aún</p>
+          </div>
+        </div>
+
+        <!-- Formulario para agregar calificación -->
+        <form id="form-rating" novalidate>
+          <input type="hidden" id="rating-pilot-id" />
+          <div class="rating-stars" id="rating-stars" role="group" aria-label="Puntuación">
+            <!-- renderizado por JS -->
+          </div>
+          <p class="rating-score-text" id="rating-score-text">Selecciona una puntuación</p>
+          <div class="form-group full-width">
+            <label for="rating-comment">Comentario <small>(opcional)</small></label>
+            <textarea id="rating-comment" rows="2" placeholder="Tu opinión sobre este piloto..."></textarea>
+          </div>
+          <span class="field-error" id="err-rating"></span>
+          <div class="modal-actions">
+            <button type="submit" class="btn-primary" id="btn-submit-rating">Enviar Rating</button>
+          </div>
+        </form>
+
+        <!-- Lista de ratings -->
+        <div class="ratings-list-section">
+          <h3 class="ratings-list-title">Ratings anteriores</h3>
+          <div id="ratings-list" class="ratings-list">
+            <!-- renderizado por JS -->
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!--  CONFIRMAR BORRADO -->
+  <div class="modal-overlay hidden" id="modal-confirm" role="dialog" aria-modal="true">
+    <div class="modal modal-sm">
+      <div class="modal-header">
+        <h2 class="modal-title">Confirmar eliminación</h2>
+        <button class="modal-close" id="modal-confirm-close">✕</button>
+      </div>
+      <div class="modal-body">
+        <p class="confirm-text">¿Estás seguro de que deseas eliminar a <strong id="confirm-pilot-name"></strong>? Esta
+          acción no se puede deshacer.</p>
+        <div class="modal-actions">
+          <button class="btn-secondary" id="btn-cancel-delete">Cancelar</button>
+          <button class="btn-danger" id="btn-confirm-delete">Eliminar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notificaciones -->
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+  <!-- Scripts -->
+  <script src="js/api.js"></script>
+  <script src="js/rating.js"></script>
+  <script src="js/ui.js"></script>
+</body>
+
+</html>
