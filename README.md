@@ -56,14 +56,14 @@ python -m http.server 5505
 ### 3. Abrir en el navegador
 
 ```
-http://localhost:5500
+http://localhost:5505
 ```
 
 ---
 
 ## CORS
 
-El frontend y el backend corren en dominios distintos. El navegador bloquea las peticiones `fetch()` a menos que el servidor lo permita explícitamente mediante headers CORS. CORS lo que hace controlar las peticiones de una pagina web hacia hacia un dominio distinto al suyo. 
+El frontend y el backend corren en dominios distintos. El navegador bloquea las peticiones `fetch()` a menos que el servidor lo permita explícitamente mediante headers CORS. CORS lo que hace controlar las peticiones de una pagina web hacia un dominio distinto al suyo. 
 
 El backend está configurado para aceptar peticiones de cualquier origen:
 
