@@ -1,5 +1,5 @@
 # F1 Pilot Tracker — Frontend
-
+## Autor: Pedro Caso 241286
 Cliente web para gestionar y calificar pilotos de Fórmula 1. Construido con **HTML, CSS y JavaScript vanilla** — sin frameworks, sin librerías, sin jQuery, sin axios. Consume la API REST del backend mediante `fetch()` nativo.
 
 > **Repositorio del backend:** [https://github.com/Pxdro-410/Proy1web-backend-PC](https://github.com/Pxdro-410/Proy1web-backend-PC)
