@@ -1,0 +1,21 @@
+# Variables de entorno 
+.env
+.env.local
+.env.*.local
+
+# IDEs y editores 
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Sistema operativo 
+.DS_Store
+.DS_Store?
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Dependencias (si algún día se agrega npm) 
+node_modules/

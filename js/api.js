@@ -1,4 +1,6 @@
-const BASE_URL = 'https://proy1web-backend-pc-production.up.railway.app';
+// BASE_URL se define en js/config.js
+// solo cambia el valor si railway se cae.
+
 
 // Helper genérico que lanza fetch, parsea JSON y maneja errores HTTP.
 // Lanza un Error con el mensaje del servidor si el status no es ok.
