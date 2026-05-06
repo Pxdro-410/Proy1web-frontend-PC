@@ -1,5 +1,5 @@
 # F1 Pilot Tracker — Frontend
-
+## Autor: Pedro Caso 241286
 Cliente web para gestionar y calificar pilotos de Fórmula 1. Construido con **HTML, CSS y JavaScript vanilla** — sin frameworks, sin librerías, sin jQuery, sin axios. Consume la API REST del backend mediante `fetch()` nativo.
 
 > **Repositorio del backend:** [https://github.com/Pxdro-410/Proy1web-backend-PC](https://github.com/Pxdro-410/Proy1web-backend-PC)
@@ -56,14 +56,14 @@ python -m http.server 5505
 ### 3. Abrir en el navegador
 
 ```
-http://localhost:5500
+http://localhost:5505
 ```
 
 ---
 
 ## CORS
 
-El frontend y el backend corren en dominios distintos. El navegador bloquea las peticiones `fetch()` a menos que el servidor lo permita explícitamente mediante headers CORS. CORS lo que hace controlar las peticiones de una pagina web hacia hacia un dominio distinto al suyo. 
+El frontend y el backend corren en dominios distintos. El navegador bloquea las peticiones `fetch()` a menos que el servidor lo permita explícitamente mediante headers CORS. CORS lo que hace controlar las peticiones de una pagina web hacia un dominio distinto al suyo. 
 
 El backend está configurado para aceptar peticiones de cualquier origen:
 
